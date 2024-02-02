@@ -1,0 +1,82 @@
+// 3
+// 92 022
+// 82 12
+// 77 13
+// 2 false numeric
+
+
+#include<iostream>
+#include<string>
+#include<vector>
+#include<cstring>
+#include<algorithm>
+using namespace std;
+
+bool numeric(pair<string,string> a, pair<string,string> b){
+    return stoi(a.second)<stoi(b.second);
+}
+
+bool lexo(pair<string,string> a, pair<string,string> b){
+    return a.second<b.second;
+}
+
+void stringKeySort(vector<pair<string,string>> &strKey,string type){
+    if(type=="numeric"){
+        cout<<"HERE";
+        sort(strKey.begin(),strKey.end(),numeric);
+    }
+    else if(type=="lexo"){
+        sort(strKey.begin(),strKey.end(),lexo);
+    }
+}
+
+string stringAtKey(string curr, int key){
+    //To extract the key using tokeniser 
+    //IMPT HOW WE TYPECASTED and also used strtok
+    string ans=strtok((char*)curr.c_str(), " ");
+    while(key>1){
+        ans=strtok(NULL, " ");
+        key--;
+    }
+    return ans;
+}
+
+int main()
+{
+    int n;
+    vector<string> strings;
+    int key;
+    string reverse;//to reverse or not
+    string type;//lexo or numeric
+
+    //Take Input
+    cin>>n;
+    cin.get();
+    for(int i=0;i<n;i++){
+        string curr;
+        getline(cin,curr);
+        strings.push_back(curr);
+    }
+    cin>>key>>reverse>>type;
+    
+    vector<pair<string,string>> strKey;
+    
+    //Storing string as {string, stringAtKey} pair
+    for(string curr: strings){
+        strKey.push_back({curr, stringAtKey(curr,key)});
+    }
+    
+    //Sorting according to type
+    stringKeySort(strKey,type);
+    
+    //Reversing if required
+    if(reverse=="true"){
+        std::reverse(strKey.begin(),strKey.end());
+    }
+    
+    for(auto it:strKey){
+        cout<<it.first<<"->"<<it.second<<endl;
+    }
+
+    return 0;
+}
